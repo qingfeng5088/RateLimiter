@@ -1,0 +1,16 @@
+configs:
+-
+ appId: app-1
+ limits:
+  -
+   api: /v1/user/info
+   limit: 100
+  -
+   api: /v1/user/login
+   limit: 50
+  -
+   api: /v1/user/agin
+   limit: 10
+  -
+    api: /v1/order
+    limit: 20

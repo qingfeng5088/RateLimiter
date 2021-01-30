@@ -1,20 +1,24 @@
 package com.qf.ratelimiter.alg;
 
 import com.google.common.base.Stopwatch;
+import com.qf.ratelimiter.config.RateLimiterConfig;
 
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-public class FixedTimeRateLimitAlg implements IRateLimitAlg{
+/**
+ * 固定时间窗口算法
+ */
+public class FixedTimeRateLimitAlg implements IRateLimitAlg {
     private static final long TRY_LOCK_TIMEOUT = 200L; //200ms
-    private Stopwatch stopwatch;
+    private final Stopwatch stopwatch;
 
-    private AtomicInteger currentCount = new AtomicInteger(0);
-    private int limit = 0;
+    private final AtomicInteger currentCount = new AtomicInteger(0);
+    private final int limit;
 
-    private Lock lock = new ReentrantLock();
+    private final Lock lock = new ReentrantLock();
 
     public FixedTimeRateLimitAlg(int limit) {
         this(limit, Stopwatch.createStarted());
@@ -32,7 +36,7 @@ public class FixedTimeRateLimitAlg implements IRateLimitAlg{
         try {
             if (lock.tryLock(TRY_LOCK_TIMEOUT, TimeUnit.MILLISECONDS)) {
                 try {
-                    if (stopwatch.elapsed(TimeUnit.MILLISECONDS) > TimeUnit.SECONDS.toMillis(1)) {
+                    if (stopwatch.elapsed(TimeUnit.MILLISECONDS) > TimeUnit.SECONDS.toMillis(RateLimiterConfig.STATISTICALINTERVAL)) {
                         currentCount.set(0);
                         stopwatch.reset();
                         stopwatch.start();

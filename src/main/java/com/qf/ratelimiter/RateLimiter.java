@@ -1,7 +1,8 @@
 package com.qf.ratelimiter;
 
 import com.qf.ratelimiter.alg.IRateLimitAlg;
-import com.qf.ratelimiter.alg.FixedTimeRateLimitAlg;
+import com.qf.ratelimiter.alg.RateLimitAlgFactory;
+import com.qf.ratelimiter.config.RateLimiterConfig;
 import com.qf.ratelimiter.rule.ApiLimit;
 import com.qf.ratelimiter.rule.IRateLimitRule;
 import com.qf.ratelimiter.rule.RuleConfig;
@@ -39,7 +40,7 @@ public class RateLimiter {
         IRateLimitAlg rateLimitCounter = counters.get(counterKey);
 
         if (rateLimitCounter == null) {
-            IRateLimitAlg newRateLimitCounter = new FixedTimeRateLimitAlg(apiLimit.getLimit());
+            IRateLimitAlg newRateLimitCounter = RateLimitAlgFactory.createRateLimitAlg(RateLimiterConfig.RATELIMITALG, apiLimit.getLimit());
             rateLimitCounter = counters.putIfAbsent(counterKey, newRateLimitCounter);
             if (rateLimitCounter == null) {
                 rateLimitCounter = newRateLimitCounter;

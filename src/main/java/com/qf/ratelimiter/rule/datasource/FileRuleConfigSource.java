@@ -2,6 +2,7 @@ package com.qf.ratelimiter.rule.datasource;
 
 import com.qf.ratelimiter.rule.RuleConfig;
 import com.qf.ratelimiter.rule.parser.IRuleConfigParser;
+import com.qf.ratelimiter.rule.parser.JsonRuleConfigParser;
 import com.qf.ratelimiter.rule.parser.YamlRuleConfigParser;
 
 import java.io.IOException;
@@ -10,7 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class FileRuleConfigSource implements IRuleConfigSource {
-   // private static final Logger log = LoggerFactory.getLogger(FileRuleConfigSource.class);
+    // private static final Logger log = LoggerFactory.getLogger(FileRuleConfigSource.class);
 
     public static final String API_LIMIT_CONFIG_NAME = "ratelimiter-rule";
     public static final String YAML_EXTENSION = "yaml";
@@ -24,7 +25,7 @@ public class FileRuleConfigSource implements IRuleConfigSource {
     static {
         PARSER_MAP.put(YAML_EXTENSION, new YamlRuleConfigParser());
         PARSER_MAP.put(YML_EXTENSION, new YamlRuleConfigParser());
-        PARSER_MAP.put(JSON_EXTENSION, new YamlRuleConfigParser());
+        PARSER_MAP.put(JSON_EXTENSION, new JsonRuleConfigParser());
     }
 
     @Override
