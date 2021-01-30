@@ -7,7 +7,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-public class RateLimitAlg {
+public class FixedTimeRateLimitAlg implements IRateLimitAlg{
     private static final long TRY_LOCK_TIMEOUT = 200L; //200ms
     private Stopwatch stopwatch;
 
@@ -16,15 +16,16 @@ public class RateLimitAlg {
 
     private Lock lock = new ReentrantLock();
 
-    public RateLimitAlg(int limit) {
+    public FixedTimeRateLimitAlg(int limit) {
         this(limit, Stopwatch.createStarted());
     }
 
-    protected RateLimitAlg(int limit, Stopwatch stopwatch) {
+    protected FixedTimeRateLimitAlg(int limit, Stopwatch stopwatch) {
         this.limit = limit;
         this.stopwatch = stopwatch;
     }
 
+    @Override
     public boolean tryAcquire() {
         int updatedCount = currentCount.incrementAndGet();
         if (updatedCount < limit) return true;

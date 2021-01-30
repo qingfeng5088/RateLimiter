@@ -5,11 +5,11 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public class RateLimitRule {
+public class TrieRateLimitRule implements IRateLimitRule{
     private final RuleConfig ruleConfig;
     private final TrieTree<String> apiTrie;
 
-    public RateLimitRule(RuleConfig ruleConfig) {
+    public TrieRateLimitRule(RuleConfig ruleConfig) {
         this.ruleConfig = ruleConfig;
         this.apiTrie = new TrieTree<>();
         buildTrie();
@@ -31,6 +31,7 @@ public class RateLimitRule {
 
     }
 
+    @Override
     public ApiLimit getLimit(String appId, String url) {
         TrieTree.TrieNode<String> searchNode = new TrieTree.TrieNode<>(null);
         TrieTree.TrieNode<String> p = apiTrie.root;
